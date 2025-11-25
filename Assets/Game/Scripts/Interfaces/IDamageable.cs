@@ -2,5 +2,5 @@
 
 public interface IDamageable
 {
-    void SetEffect(Vector3 point);
+    void ApplyEffect(float force, Vector3 point, float radius);
 }

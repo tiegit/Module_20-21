@@ -123,37 +123,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &101924522
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 101924523}
-  m_Layer: 0
-  m_Name: Player
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &101924523
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 101924522}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &221992657
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -400,6 +369,9 @@ MonoBehaviour:
   _minGrabDistance: 0.1
   _maxGrabDistance: 50
   _explosionRadius: 2
+  _explosionForce: 1000
+  _explosionPrefab: {fileID: 8797303557111771874, guid: e7cc96b0f25fe284492162c3224125f4,
+    type: 3}
 --- !u!4 &380396185
 Transform:
   m_ObjectHideFlags: 0
@@ -1029,4 +1001,3 @@ SceneRoots:
   - {fileID: 832575519}
   - {fileID: 970210318}
   - {fileID: 380396185}
-  - {fileID: 101924523}

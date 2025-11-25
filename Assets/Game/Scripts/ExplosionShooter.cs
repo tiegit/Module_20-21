@@ -3,11 +3,15 @@
 public class ExplosionShooter : IShooter
 {
     private PlayerInput _playerInput;
+    private GameObject _explosionPrefab;
+    private float _force;
     private float _radius;
 
-    public ExplosionShooter(PlayerInput playerInput, float radius)
+    public ExplosionShooter(PlayerInput playerInput, GameObject explosionPrefab, float force, float radius)
     {
         _playerInput = playerInput;
+        _explosionPrefab = explosionPrefab;
+        _force = force;
         _radius = radius;
     }
 
@@ -23,9 +27,12 @@ public class ExplosionShooter : IShooter
             {
                 if (target.TryGetComponent(out IDamageable damageable))
                 {
-                    damageable.SetEffect(hitInfo.point);
+                    damageable.ApplyEffect(_force, hitInfo.point, _radius);
                 }
             }
+
+            var explosionInstance = Object.Instantiate(_explosionPrefab, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
+            explosionInstance.transform.localScale *= _radius;
         }
     }
 }

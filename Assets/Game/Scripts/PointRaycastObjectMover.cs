@@ -78,7 +78,7 @@ public class PointRaycastObjectMover : IRaycastMover // TODO для работы этого кл
         }
     }
 
-    private void OnDrawGizmos()
+    private void OnDrawGizmos()// без MonoBehaviour не работает
     {
         Gizmos.color = Color.red;
         Ray pointRay = new Ray(_point.position, _point.forward);

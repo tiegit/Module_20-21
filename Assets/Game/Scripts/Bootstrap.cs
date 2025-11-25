@@ -8,6 +8,8 @@ public class Bootstrap : MonoBehaviour
     [SerializeField] private float _maxGrabDistance = 50f;
 
     [SerializeField, Space (15)] private float _explosionRadius = 2f;
+    [SerializeField] private float _explosionForce = 10f;
+    [SerializeField] private GameObject _explosionPrefab;
 
     private Player _player;
     private ShooterSwitcher _shooterSwitcher;
@@ -23,7 +25,7 @@ public class Bootstrap : MonoBehaviour
 
         _player = new Player(_playerInput);
 
-        _shooterSwitcher = new ShooterSwitcher(_playerInput, _player, _explosionRadius);
+        _shooterSwitcher = new ShooterSwitcher(_playerInput, _player, _explosionPrefab, _explosionForce, _explosionRadius);
     }
 
     private void Update()

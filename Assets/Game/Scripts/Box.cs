@@ -3,8 +3,9 @@
 [RequireComponent(typeof(Rigidbody))]
 public class Box : MonoBehaviour, IGrabbable, IDamageable
 {
-    private Rigidbody _rigidbody;
+    [SerializeField] private float _raycastDistance = 2f;
 
+    private Rigidbody _rigidbody;
     private Vector3 _anchorPointPosition;
     private Vector3 _grabOffset;
 
@@ -13,7 +14,31 @@ public class Box : MonoBehaviour, IGrabbable, IDamageable
     private void FixedUpdate()
     {
         if (_rigidbody.isKinematic)
-            _rigidbody.MovePosition(_anchorPointPosition + _grabOffset);
+        {
+            Vector3 targetPosition = _anchorPointPosition + _grabOffset;
+
+            if (TryGetComponent(out Collider collider))
+            {
+                RaycastHit[] hits = Physics.RaycastAll(transform.position, Vector3.down, _raycastDistance);
+
+                foreach (RaycastHit hit in hits)
+                {
+                    if (hit.collider.gameObject != gameObject)
+                    {
+                        float groundHeight = hit.point.y;
+                        float boxHalfHeight = collider.bounds.extents.y;
+                        float minY = groundHeight + boxHalfHeight;
+
+                        if (targetPosition.y < minY)
+                            targetPosition.y = minY;
+
+                        break;
+                    }
+                }
+            }
+
+            _rigidbody.MovePosition(targetPosition);
+        }
     }
 
     public void Grab(Vector3 grabPoint)
@@ -29,8 +54,17 @@ public class Box : MonoBehaviour, IGrabbable, IDamageable
 
     public void SetAnchorPointPosition(Vector3 anchorPointPosition) => _anchorPointPosition = anchorPointPosition;
 
-    public void SetEffect(Vector3 point)
+    public void ApplyEffect(float force, Vector3 point, float radius)
     {
-        Debug.Log($"{name}");
+        if (_rigidbody.isKinematic)
+            Drop();
+        _rigidbody.AddExplosionForce(force, point, radius);
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+
+        Gizmos.DrawRay(transform.position, Vector3.down * _raycastDistance);
     }
 }

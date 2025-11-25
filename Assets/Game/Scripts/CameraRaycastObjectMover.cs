@@ -4,9 +4,9 @@ public class CameraRaycastObjectMover : IRaycastMover
 {
     private PlayerInput _playerInput;
 
-    private float _zoomSpeed = 5f;
-    private float _minGrabDistance = 0.1f;
-    private float _maxGrabDistance = 50f;
+    private float _zoomSpeed;
+    private float _minGrabDistance;
+    private float _maxGrabDistance;
 
     private IGrabbable _hoveredGrabbable;
     private IGrabbable _grabbedObject;
@@ -98,7 +98,7 @@ public class CameraRaycastObjectMover : IRaycastMover
         }
     }
 
-    private void OnDrawGizmos()
+    private void OnDrawGizmos() // без MonoBehaviour не работает
     {
         Gizmos.color = Color.red;
         Ray cameraRay = Camera.main.ScreenPointToRay(Input.mousePosition);

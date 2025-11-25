@@ -3,8 +3,15 @@
 public class StandartShooter : IShooter
 {
     private PlayerInput _playerInput;
+    private GameObject _explosionPrefab;
+    private float _force;
 
-    public StandartShooter(PlayerInput playerInput) => _playerInput = playerInput;
+    public StandartShooter(PlayerInput playerInput, GameObject explosionPrefab, float force)
+    {
+        _playerInput = playerInput;
+        _explosionPrefab = explosionPrefab;
+        _force = force;
+    }
 
     public void Shoot()
     {
@@ -14,7 +21,9 @@ public class StandartShooter : IShooter
         {
             if (hitInfo.collider.TryGetComponent(out IDamageable damageable))
             {
-                damageable.SetEffect(hitInfo.point);
+                damageable.ApplyEffect(_force, hitInfo.point, 0);
+
+                Object.Instantiate(_explosionPrefab, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
             }
         }
     }
