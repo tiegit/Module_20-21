@@ -17,4 +17,6 @@ public class PlayerInput
     public bool Alpha1Down => Input.GetKeyDown(KeyCode.Alpha1);
 
     public bool Alpha2Down => Input.GetKeyDown(KeyCode.Alpha2);
+
+    public bool FKeyPressed => Input.GetKeyDown(KeyCode.F);
 }

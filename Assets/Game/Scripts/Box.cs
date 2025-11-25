@@ -1,15 +1,20 @@
 ﻿using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(Rigidbody), typeof(Collider))]
 public class Box : MonoBehaviour, IGrabbable, IDamageable
 {
     [SerializeField] private float _raycastDistance = 2f;
 
     private Rigidbody _rigidbody;
+    private Collider _collider;
     private Vector3 _anchorPointPosition;
     private Vector3 _grabOffset;
 
-    private void Awake() => _rigidbody = GetComponent<Rigidbody>();
+    private void Awake()
+    {
+        _rigidbody = GetComponent<Rigidbody>();
+        _collider = GetComponent<Collider>();
+    }
 
     private void FixedUpdate()
     {
@@ -17,25 +22,7 @@ public class Box : MonoBehaviour, IGrabbable, IDamageable
         {
             Vector3 targetPosition = _anchorPointPosition + _grabOffset;
 
-            if (TryGetComponent(out Collider collider))
-            {
-                RaycastHit[] hits = Physics.RaycastAll(transform.position, Vector3.down, _raycastDistance);
-
-                foreach (RaycastHit hit in hits)
-                {
-                    if (hit.collider.gameObject != gameObject)
-                    {
-                        float groundHeight = hit.point.y;
-                        float boxHalfHeight = collider.bounds.extents.y;
-                        float minY = groundHeight + boxHalfHeight;
-
-                        if (targetPosition.y < minY)
-                            targetPosition.y = minY;
-
-                        break;
-                    }
-                }
-            }
+            targetPosition = AdjustTargetPositionForGround(targetPosition);
 
             _rigidbody.MovePosition(targetPosition);
         }
@@ -59,6 +46,28 @@ public class Box : MonoBehaviour, IGrabbable, IDamageable
         if (_rigidbody.isKinematic)
             Drop();
         _rigidbody.AddExplosionForce(force, point, radius);
+    }
+
+    private Vector3 AdjustTargetPositionForGround(Vector3 targetPosition)
+    {
+        RaycastHit[] hits = Physics.RaycastAll(transform.position, Vector3.down, _raycastDistance);
+
+        foreach (RaycastHit hit in hits)
+        {
+            if (hit.collider.gameObject != gameObject)
+            {
+                float groundHeight = hit.point.y;
+                float boxHalfHeight = _collider.bounds.extents.y;
+                float minY = groundHeight + boxHalfHeight;
+
+                if (targetPosition.y < minY)
+                    targetPosition.y = minY;
+
+                break;
+            }
+        }
+
+        return targetPosition;
     }
 
     private void OnDrawGizmos()

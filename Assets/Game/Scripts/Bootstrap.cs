@@ -1,3 +1,5 @@
+using Cinemachine;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Bootstrap : MonoBehaviour
@@ -11,10 +13,13 @@ public class Bootstrap : MonoBehaviour
     [SerializeField] private float _explosionForce = 10f;
     [SerializeField] private GameObject _explosionPrefab;
 
+    [SerializeField, Space(15)] private List<CinemachineVirtualCamera> _virtualCameras;
+
     private Player _player;
     private ShooterSwitcher _shooterSwitcher;
     private PlayerInput _playerInput;
     private IRaycastMover _raycaster;
+    private CameraModeSwitcher _cameraModeSwitcher;
 
     private void Awake()
     {
@@ -26,6 +31,8 @@ public class Bootstrap : MonoBehaviour
         _player = new Player(_playerInput);
 
         _shooterSwitcher = new ShooterSwitcher(_playerInput, _player, _explosionPrefab, _explosionForce, _explosionRadius);
+
+        _cameraModeSwitcher = new CameraModeSwitcher(_playerInput, _virtualCameras);
     }
 
     private void Update()
@@ -33,5 +40,6 @@ public class Bootstrap : MonoBehaviour
         _raycaster?.CustomUpdate();
         _shooterSwitcher?.CustomUpdate();
         _player?.CustomUpdate();
+        _cameraModeSwitcher?.CustomUpdate();
     }
 }
