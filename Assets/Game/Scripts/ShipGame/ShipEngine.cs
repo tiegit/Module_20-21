@@ -3,6 +3,7 @@ using UnityEngine;
 public class ShipEngine : MonoBehaviour
 {
     private const float CheckDistance = 0.6f;
+    private const float DotProductTreshhold = 0.01f;
 
     [SerializeField] private float _rotationSpeed;
     [SerializeField] private float _maxSpeed;
@@ -55,7 +56,7 @@ public class ShipEngine : MonoBehaviour
             float windAndSailDotProduct = Vector3.Dot(_sailDirection, _wind.Direction);
             float clampedDot = Mathf.Clamp(windAndSailDotProduct, 0f, 1f);
 
-            if (windAndSailDotProduct <= 0)
+            if (windAndSailDotProduct < DotProductTreshhold)
                 _movable.velocity = Vector3.zero;
             else
                 _movable.AddForce(_currentOrientation.forward * clampedDot * _wind.Force, ForceMode.Acceleration);
