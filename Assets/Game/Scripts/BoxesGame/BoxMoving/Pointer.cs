@@ -6,7 +6,7 @@ public class Pointer : MonoBehaviour
 
     private IRaycastMover _raycaster;
 
-    private bool _isActive;
+    public bool IsActive { get; private set; }
 
     public void Initialize(IRaycastMover raycaster)
     {
@@ -22,14 +22,14 @@ public class Pointer : MonoBehaviour
 
         if (_raycaster.CanShowPointer)
         {
-            if (!_isActive)
+            if (!IsActive)
                 Show();
 
             transform.position = _raycaster.PointerPosition;
         }
         else
         {
-            if (_isActive)
+            if (IsActive)
                 Hide();
         }
     }
@@ -37,12 +37,12 @@ public class Pointer : MonoBehaviour
     private void Show()
     {
         _pointerView.SetActive(true);
-        _isActive = true;
+        IsActive = true;
     }
 
     private void Hide()
     {
         _pointerView.SetActive(false);
-        _isActive = false;
+        IsActive = false;
     }
 }

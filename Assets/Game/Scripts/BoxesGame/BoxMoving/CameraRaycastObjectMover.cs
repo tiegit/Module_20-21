@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class CameraRaycastObjectMover : IRaycastMover
 {
+    private const float PositionThreshold = 0.001f;
+    private const float RotationThreshold = 0.1f;
+
     private PlayerInput _playerInput;
 
     private float _zoomSpeed;
@@ -13,6 +16,10 @@ public class CameraRaycastObjectMover : IRaycastMover
 
     private float _grabDistance;
 
+    private Vector3 _previousCameraPosition;
+    private Quaternion _previousCameraRotation;
+
+    public bool IsCameraMoving { get; private set; }
     public Vector3 PointerPosition { get; private set; }
     public bool CanShowPointer => _hoveredGrabbable != null;
 
@@ -22,10 +29,17 @@ public class CameraRaycastObjectMover : IRaycastMover
         _zoomSpeed = zoomSpeed;
         _minGrabDistance = minGrabDistance;
         _maxGrabDistance = maxGrabDistance;
+
+        _previousCameraPosition = Camera.main.transform.position;
+        _previousCameraRotation = Camera.main.transform.rotation;
+
+        IsCameraMoving = false;
     }
 
     public void CustomUpdate()
     {
+        UpdateCameraMovementStatus();
+
         Ray ray = Camera.main.ScreenPointToRay(_playerInput.MousePosition);
 
         ProcessRaycast(ray);
@@ -39,6 +53,20 @@ public class CameraRaycastObjectMover : IRaycastMover
             TryRelease();
     }
 
+    private void UpdateCameraMovementStatus()
+    {
+        Vector3 currentPosition = Camera.main.transform.position;
+        Quaternion currentRotation = Camera.main.transform.rotation;
+
+        float positionDelta = Vector3.Distance(currentPosition, _previousCameraPosition);
+        float rotationDelta = Quaternion.Angle(currentRotation, _previousCameraRotation);
+
+        IsCameraMoving = positionDelta > PositionThreshold || rotationDelta > RotationThreshold;
+
+        _previousCameraPosition = currentPosition;
+        _previousCameraRotation = currentRotation;
+    }
+
     private void ProcessRaycast(Ray ray)
     {
         bool hasHit = Physics.Raycast(ray, out RaycastHit hitInfo);
@@ -48,7 +76,7 @@ public class CameraRaycastObjectMover : IRaycastMover
             if (_hoveredGrabbable != grabbable)
                 _hoveredGrabbable = grabbable;
 
-            PointerPosition = hitInfo.point;
+                PointerPosition = hitInfo.point;
         }
         else
         {
@@ -57,8 +85,15 @@ public class CameraRaycastObjectMover : IRaycastMover
 
         if (_grabbedObject != null)
         {
-            Vector3 anchorPoint = ray.GetPoint(_grabDistance);
-            _grabbedObject.SetAnchorPointPosition(anchorPoint);
+            if (IsCameraMoving)
+            {
+                _grabDistance = Vector3.Distance(Camera.main.transform.position, PointerPosition);                
+            }
+            else
+            {
+                Vector3 anchorPoint = ray.GetPoint(_grabDistance);
+                _grabbedObject.SetAnchorPointPosition(anchorPoint);
+            }
         }
     }
 
