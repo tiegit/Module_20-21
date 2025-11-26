@@ -1167,6 +1167,51 @@ Transform:
   - {fileID: 1189780114}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1033737136
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1033737138}
+  - component: {fileID: 1033737137}
+  m_Layer: 0
+  m_Name: TargetFPS
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1033737137
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1033737136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 316558e2460f8b84e990e0b3388304b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SetFps: 60
+--- !u!4 &1033737138
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1033737136}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1112068396
 GameObject:
   m_ObjectHideFlags: 0
@@ -1315,7 +1360,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
   m_LocalPosition: {x: 0, y: -0.5, z: 0}
-  m_LocalScale: {x: 50, y: 1, z: 50}
+  m_LocalScale: {x: 500, y: 1, z: 500}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 970210318}
@@ -1370,7 +1415,6 @@ MonoBehaviour:
   _maxSpeed: 2
   _movable: {fileID: 1874537810}
   _currentOrientation: {fileID: 705352194}
-  _sail: {fileID: 1396036611}
   _wind: {fileID: 1349357585}
 --- !u!1 &1329089772
 GameObject:
@@ -1502,8 +1546,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _force: 1
-  _changeInterval: 5
-  _rotationSpeed: 100
+  _changeInterval: 10
+  _rotationSpeed: 50
 --- !u!114 &1349357586
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1546,7 +1590,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 232ceabe44a7cbb42a8553d322423127, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _shipEngine: {fileID: 1287440167}
   _rotationSpeed: 150
+  _sailLimitAngles: 90
 --- !u!4 &1396036612
 Transform:
   m_ObjectHideFlags: 0
@@ -1779,7 +1825,7 @@ SphereCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1874537807}
-  m_Material: {fileID: 13400000, guid: ed2a2b8d9b62c5847820006f04795236, type: 2}
+  m_Material: {fileID: 13400000, guid: 596c94f8fb783ef4badcf6b08db04189, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -1824,6 +1870,7 @@ Rigidbody:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 1033737138}
   - {fileID: 330585546}
   - {fileID: 193692377}
   - {fileID: 410087041}

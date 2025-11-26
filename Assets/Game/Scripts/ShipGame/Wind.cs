@@ -2,14 +2,15 @@ using UnityEngine;
 
 public class Wind : MonoBehaviour
 {
-    [SerializeField] private float _force = 200f;
-    [SerializeField] private float _changeInterval = 2f;
-    [SerializeField] private float _rotationSpeed = 200f;
+    [SerializeField] private float _force = 1f;
+    [SerializeField] private float _changeInterval = 10f;
+    [SerializeField] private float _rotationSpeed = 50;
 
     private float _timer;
     private Quaternion _targetRotation;
 
     public float Force => _force;
+    public Vector3 Direction => (transform.rotation * Vector3.forward).normalized;
 
     private void Start()
     {
